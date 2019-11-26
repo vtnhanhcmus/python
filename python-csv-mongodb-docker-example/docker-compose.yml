@@ -2,6 +2,7 @@ version: '3.5'
 services:
   api:
     build: .
+    restart: always
     ports:
       - "8082:8082"
     volumes:
@@ -9,7 +10,19 @@ services:
     environment:
       - ENV=development
       - PORT=8082
+      - DB=mongodb://mongodb:27017/car_park_db
+    depends_on:
+      - mongodb
 
-networks:
-  default:
-    name: api
+  mongodb:
+    image: mongo:latest
+    container_name: "car_park_db_container"
+    environment:
+      - MONGO_DATA_DIR=/usr/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_ROOT_HOST=%
+    volumes:
+      - ./data/db:/usr/data/db
+    ports:
+      - "27017:27017"
+    restart: always
