@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  api:
+    build: .
+    ports:
+      - "8082:8082"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - ENV=development
+      - PORT=8082
+
+networks:
+  default:
+    name: api
